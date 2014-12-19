@@ -12,6 +12,8 @@ Vagrant.configure("2") do |config|
   # Forward Oracle ports
   config.vm.network :forwarded_port, guest: 1521, host: 1521
   config.vm.network :forwarded_port, guest: 1158, host: 1158
+  config.vm.network :forwarded_port, guest: 2484, host: 2484
+  #config.vm.network "public_network"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id,
