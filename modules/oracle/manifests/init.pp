@@ -57,7 +57,24 @@ class oracle::server (
     "/etc/init.d/oracle":
       mode => 0777,
       content => template("oracle/oracle.erb");            
-         
+
+    "/home/$ORACLE_USER":
+      owner => "$ORACLE_USER",
+      group => 'oinstall',
+      ensure => "directory";
+
+    "/home/$ORACLE_USER/create-wallet.sh":
+      mode => 0777,
+      owner => "$ORACLE_USER",
+      content => template("oracle/create-wallet.sh");
+
+    "$ORACLE_HOME/network/admin/listener.ora":
+      owner => "$ORACLE_USER",
+      content => template("oracle/listener.ora.erb");
+
+    "$ORACLE_HOME/network/admin/sqlnet.ora":
+      owner => "$ORACLE_USER",
+      content => template("oracle/sqlnet.ora.erb");
   }
 
 
@@ -107,7 +124,12 @@ class oracle::server (
     "autostart 2":  
       command => "/bin/sed -i 's/:N$/:Y/g' /etc/oratab",
       user => root,
-      require=>Exec['autostart'];       
+      require=>Exec['autostart'];
+
+    "create wallet":
+      command => "/home/$ORACLE_USER/create-wallet.sh",
+      user => "$ORACLE_USER",
+      require => [Exec['install'], File['/home/$ORACLE_USER/create-wallet.sh']];
   }
 
   service {
