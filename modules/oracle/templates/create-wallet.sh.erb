@@ -1,0 +1,7 @@
+#!/bin/bash
+
+orapki wallet create -wallet <%= @ORACLE_HOME %>/wallet -pwd G3n3s1ysWlan1
+orapki wallet add -wallet <%= @ORACLE_HOME %>/wallet -dn 'CN=myOracle,C=US' -keysize 1024 -self_signed -validity 5000 -pwd G3n3s1ysWlan1
+orapki wallet create -wallet <%= @ORACLE_HOME %>/wallet -auto_login -pwd G3n3s1ysWlan1
+orapki wallet export -wallet <%= @ORACLE_HOME %>/wallet -dn 'CN=myOracle,C=US' -cert ./certificate.txt
+cp certificate.txt /vagrant
