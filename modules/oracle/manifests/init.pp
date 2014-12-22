@@ -66,15 +66,23 @@ class oracle::server (
     "/home/$ORACLE_USER/create-wallet.sh":
       mode => 0777,
       owner => "$ORACLE_USER",
-      content => template("oracle/create-wallet.sh");
+      content => template("oracle/create-wallet.sh.erb");
 
     "$ORACLE_HOME/network/admin/listener.ora":
       owner => "$ORACLE_USER",
-      content => template("oracle/listener.ora.erb");
+      content => template("oracle/listener.ora.erb"),
+      require => Exec['post-install 2'];
 
     "$ORACLE_HOME/network/admin/sqlnet.ora":
       owner => "$ORACLE_USER",
-      content => template("oracle/sqlnet.ora.erb");
+      content => template("oracle/sqlnet.ora.erb"),
+      require => Exec['post-install 2'];
+
+    #"/vagrant/certificate.txt":
+      #owner => 'vagrant',
+      #ensure => present,
+      #source => "/home/$ORACLE_USER/certificate.txt",
+      #require => Exec['create wallet'];
   }
 
 
@@ -126,10 +134,10 @@ class oracle::server (
       user => root,
       require=>Exec['autostart'];
 
-    "create wallet":
-      command => "/home/$ORACLE_USER/create-wallet.sh",
-      user => "$ORACLE_USER",
-      require => [Exec['install'], File['/home/$ORACLE_USER/create-wallet.sh']];
+    #"create wallet":
+      #command => "/home/$ORACLE_USER/create-wallet.sh",
+      #user => "$ORACLE_USER",
+      #require => [Exec['install'], File["/home/$ORACLE_USER/create-wallet.sh"]];
   }
 
   service {
