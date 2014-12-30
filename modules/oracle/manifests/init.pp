@@ -96,6 +96,7 @@ class oracle::server (
       cwd => "$ORACLE_ROOT/tmp",
       require => Package['unzip'],
       creates => "$ORACLE_ROOT/tmp/database",
+      timeout => 0,
       user => "$ORACLE_USER";
 
     "unzip part2":
@@ -103,6 +104,7 @@ class oracle::server (
       cwd => "$ORACLE_ROOT/tmp",
       require => Exec['unzip part1'],
       creates => "$ORACLE_ROOT/tmp/database/stage/Components/oracle.jdk/1.5.0.17.0/1/DataFiles",
+      timeout => 0,
       user => "$ORACLE_USER";
 
     "install" :
