@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :shell, :inline => "sudo yum install puppet -y"
 
-  config.vbguest.auto_update = false
+  #config.vbguest.auto_update = false
 
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "manifests"
