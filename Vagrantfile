@@ -11,8 +11,10 @@ Vagrant.configure("2") do |config|
 
   # Forward Oracle ports
   config.vm.network :forwarded_port, guest: 1521, host: 1521
+  config.vm.network :forwarded_port, guest: 1522, host: 1522
   config.vm.network :forwarded_port, guest: 1158, host: 1158
   config.vm.network :forwarded_port, guest: 2484, host: 2484
+  config.vm.network :forwarded_port, guest: 22, host: 2222, host_ip: "0.0.0.0", id: "ssh", auto_correct: true 
   #config.vm.network "public_network"
 
   config.vm.provider :virtualbox do |vb|
